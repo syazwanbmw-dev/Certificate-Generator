@@ -1,6 +1,20 @@
 // Utility functions
 
 /**
+ * Maximum width (as % of certificate width) a centred text may use so it
+ * never crosses the certificate edge. Text is centred on x, so the usable
+ * width is twice the distance to the nearest edge, minus 5% margin per side.
+ * @param {number} x - Horizontal centre of the text, in % (0-100)
+ * @returns {number} Max width in % (never below 10)
+ */
+export function maxTextWidthPercent(x) {
+    const pos = Number(x);
+    const centre = Number.isFinite(pos) ? pos : 50;
+    const nearestEdge = Math.min(centre, 100 - centre);
+    return Math.max(2 * nearestEdge - 10, 10);
+}
+
+/**
  * Check if file is an image
  * @param {File} file - The file to check
  * @returns {boolean} True if file is an image

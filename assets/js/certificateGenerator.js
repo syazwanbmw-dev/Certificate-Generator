@@ -1,5 +1,6 @@
 // Certificate generation functions
 import { getValidNames } from './namesManager.js';
+import { maxTextWidthPercent } from './utils.js';
 
 /**
  * Main function to generate certificates for all entries
@@ -129,7 +130,11 @@ function createOverlay(text, position, fontFamily) {
     el.style.fontFamily = fontFamily;
     el.style.fontWeight = 'bold';
     el.style.textAlign = 'center';
-    el.style.whiteSpace = 'nowrap';
+    // Wrap at word boundaries inside the certificate edge (never break a word).
+    // width:max-content stops the absolute box shrinking to the space right of `left`.
+    el.style.whiteSpace = 'normal';
+    el.style.width = 'max-content';
+    el.style.maxWidth = `${maxTextWidthPercent(position.x)}%`;
     el.style.zIndex = '10';
     return el;
 }

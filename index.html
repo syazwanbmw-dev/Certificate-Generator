@@ -193,6 +193,7 @@
                                 :style="{
                                     left: `${namePosition.x}%`,
                                     top: `${namePosition.y}%`,
+                                    maxWidth: `${maxTextWidth(namePosition.x)}%`,
                                     fontSize: `${namePosition.fontSize}px`,
                                     color: namePosition.color,
                                     fontFamily: fontFamily
@@ -206,6 +207,7 @@
                                 :style="{
                                     left: `${icPosition.x}%`,
                                     top: `${icPosition.y}%`,
+                                    maxWidth: `${maxTextWidth(icPosition.x)}%`,
                                     fontSize: `${icPosition.fontSize}px`,
                                     color: icPosition.color,
                                     fontFamily: fontFamily
@@ -221,6 +223,7 @@
                                 :style="{
                                     left: `${field.position.x}%`,
                                     top: `${field.position.y}%`,
+                                    maxWidth: `${maxTextWidth(field.position.x)}%`,
                                     fontSize: `${field.position.fontSize}px`,
                                     color: field.position.color,
                                     fontFamily: fontFamily

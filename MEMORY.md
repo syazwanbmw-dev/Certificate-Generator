@@ -4,7 +4,10 @@
 
 - 🟢 **LIVE** — https://syazwanbmw-dev.github.io/Certificate-Generator/
 - Deploy: GitHub Actions (`.github/workflows/static.yml`), auto-trigger setiap push ke `main`
-- Tiada backlog aktif — site ikut spec asal upstream, tiada modifikasi kod dibuat lagi
+- 2026-09-28: commit `00a4692` redesign CSS sahaja (putih/emerald, Inter+Manrope; markup + JS tak diubah) — sebelum ini catatan ini salah kata "tiada modifikasi". Disahkan 2026-11-10: live HTTP 200.
+- Nama fail sebenar JS huruf kecil (`filehandlers.js`, `fonthandler.js`) — senarai Struktur di bawah salah huruf besar.
+- 2026-11-10: nama/IC/Extra patah baris ikut perkataan dalam sempadan sijil (BELUM push). Lebar maks = 2×jarak ke tepi terdekat − 10% (min 10%), fungsi `maxTextWidthPercent` dalam utils.js, dipakai di pratonton (index.html) DAN cetak (certificateGenerator.js). KENAPA `width:max-content`: tanpa itu kotak absolute mengecut ke ruang di kanan `left`, jadi teks patah terlalu awal. Satu perkataan lebih panjang dari lebar maks akan melimpah (sengaja, master: jangan potong perkataan). Ujian: `node --test tests/utils.test.mjs` (SEBUT fail; `tests/` sahaja ralat). Belum diuji dalam app penuh + cetak PDF sebenar; line-height baris kedua longgar (diwarisi).
+- Tiada backlog aktif
 
 ## Sejarah
 

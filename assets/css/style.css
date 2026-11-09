@@ -409,7 +409,8 @@ input[type="color"] {
     text-align: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
-    white-space: nowrap;
+    white-space: normal;
+    width: max-content;
     pointer-events: none;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }

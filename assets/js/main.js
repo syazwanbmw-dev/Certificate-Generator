@@ -22,6 +22,8 @@ import {
     resetToDefaultFont
 } from './fonthandler.js';
 
+import { maxTextWidthPercent } from './utils.js';
+
 // Main Vue application
 new Vue({
     el: '#app',
@@ -114,6 +116,11 @@ new Vue({
     },
 
     methods: {
+        // Max text width (%) so overlays wrap inside the certificate edge
+        maxTextWidth(x) {
+            return maxTextWidthPercent(x);
+        },
+
         // File upload handlers
         handleTemplateUpload(event) {
             handleTemplateUpload.call(this, event);
