@@ -38,7 +38,7 @@ new Vue({
         // Position and styling for the Name overlay
         namePosition: {
             x: 50,
-            y: 50,
+            y: 42, // high enough that a wrapped 2nd/3rd line stays above the IC (y: 62)
             fontSize: 36,
             color: '#000000'
         },
@@ -46,7 +46,7 @@ new Vue({
         // Position and styling for the IC overlay
         icPosition: {
             x: 50,
-            y: 60,
+            y: 62,
             fontSize: 24,
             color: '#000000'
         },
