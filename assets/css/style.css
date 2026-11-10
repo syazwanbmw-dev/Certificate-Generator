@@ -405,7 +405,11 @@ input[type="color"] {
 .ic-overlay,
 .extra-overlay {
     position: absolute;
-    transform: translate(-50%, -50%);
+    /* First line stays centred on Y; extra wrapped lines grow downward.
+       margin-top = -half of line-height (0.6em) so one-line text is unmoved. */
+    transform: translateX(-50%);
+    line-height: 1.2;
+    margin-top: -0.6em;
     text-align: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
