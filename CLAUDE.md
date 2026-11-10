@@ -14,11 +14,16 @@ Sebelum ni versi serupa (`sijil.html`) pernah dimasukkan dalam `mypwa-v2` (denga
 
 ## Deploy
 
-Auto-deploy via GitHub Actions (`.github/workflows/static.yml`) setiap kali push ke `main`.
+Deploy via GitHub Actions (`.github/workflows/static.yml`). **Push ke `main` TAK mencetus workflow** — kena cetus manual selepas push:
 
 ```
 git push origin main
+gh workflow run static.yml -R syazwanbmw-dev/Certificate-Generator --ref main
 ```
+
+Sentiasa guna `-R` (repo ni fork; `gh` tanpa `-R` menyasar repo upstream Kiyoraka). Tunggu ±20s lalu sahkan dengan `curl --ssl-no-revoke` pada fail yang baru diubah.
+
+Ujian: `node --test tests/utils.test.mjs` (sebut fail, bukan folder).
 
 Live di: **https://syazwanbmw-dev.github.io/Certificate-Generator/**
 

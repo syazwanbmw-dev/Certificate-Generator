@@ -1,16 +1,31 @@
 # MEMORY.md — Certificate Generator (standalone)
 
-## STATUS SEMASA (2026-09-27)
+## STATUS SEMASA (2026-11-10)
 
-- 🟢 **LIVE** — https://syazwanbmw-dev.github.io/Certificate-Generator/
-- Deploy: GitHub Actions (`.github/workflows/static.yml`), auto-trigger setiap push ke `main`
-- 2026-09-28: commit `00a4692` redesign CSS sahaja (putih/emerald, Inter+Manrope; markup + JS tak diubah) — sebelum ini catatan ini salah kata "tiada modifikasi". Disahkan 2026-11-10: live HTTP 200.
-- Nama fail sebenar JS huruf kecil (`filehandlers.js`, `fonthandler.js`) — senarai Struktur di bawah salah huruf besar.
-- 2026-11-10: nama/IC/Extra patah baris ikut perkataan dalam sempadan sijil (LIVE 2026-11-10, commit 02a59ed). Lebar maks = 2×jarak ke tepi terdekat − 10% (min 10%), fungsi `maxTextWidthPercent` dalam utils.js, dipakai di pratonton (index.html) DAN cetak (certificateGenerator.js). KENAPA `width:max-content`: tanpa itu kotak absolute mengecut ke ruang di kanan `left`, jadi teks patah terlalu awal. Satu perkataan lebih panjang dari lebar maks akan melimpah (sengaja, master: jangan potong perkataan). Ujian: `node --test tests/utils.test.mjs` (SEBUT fail; `tests/` sahaja ralat). Belum diuji dalam app penuh + cetak PDF sebenar; line-height baris kedua longgar (diwarisi).
-- 🔴 2026-11-10: push ke `main` TAK mencetus workflow (run lama pun `workflow_dispatch`). Selepas push WAJIB `gh workflow run static.yml -R syazwanbmw-dev/Certificate-Generator --ref main`. Juga: `gh` tanpa `-R` menyasar repo UPSTREAM (fork) — senarai run salah (Mei 2026).
-- 2026-11-10 (BELUM push): IC TIDAK patah langsung (`white-space:nowrap`; param `wrap=false` dlm createOverlay + `.ic-overlay` CSS). Keputusan master: sebab pelayar boleh patah IC di sempang `-`. Akibat: IC pada X terlalu dekat tepi akan MELIMPAH (disahkan visual X=12%) — sengaja. Nama/Extra tanpa ruang juga melimpah; Extra boleh patah di sempang.
-- 2026-11-10 (BELUM push): baris PERTAMA dikunci pada Y (`translateX(-50%)` + `margin-top:-0.6em` + `line-height:1.2`) — dulu `translate(-50%,-50%)` bikin teks 2 baris NAIK separuh jarak baris (~27px @34px) & line-height 1.6 diwarisi terlalu longgar. Baris tambahan turun ke bawah. Disahkan Chrome (pratonton + simulasi gaya cetak): baris pertama tepat 50% untuk nama 1 & 2 baris. TRADE-OFF: pada lalai LAMA nama Y=50% / IC Y=60%, baris ke-2 nama BERTINDIH IC (dilihat). Lalai BARU (master: IC mesti kekal di bawah nama): nama Y=42%, IC Y=62% — disahkan Chrome: 1 baris jurang 89px, 2 baris 46px, tiada tindih; 4 baris (nama sangat panjang) MASIH bertindih. Lalai hanya nilai awal; tak ubah templat/laras master. Ujian layout cetak: salin peraturan @media print sebagai gaya skrin (cssRules silang-asal perlu try/catch); jangan ukur DOM cetak tanpa itu (container static → 0%/100% palsu). Pelayan ujian: skrip node kecil, tutup ikut PID (JANGAN taskkill /IM node.exe).
-- Tiada backlog aktif
+- 🟢 **LIVE** `faa7e57` — https://syazwanbmw-dev.github.io/Certificate-Generator/ (disahkan live 2026-11-10, termasuk uji CSV 20 nama rawak)
+- 🔴 **Deploy: push ke `main` TAK mencetus workflow** (semua run lama `workflow_dispatch`). Selepas push WAJIB `gh workflow run static.yml -R syazwanbmw-dev/Certificate-Generator --ref main`. `gh` tanpa `-R` menyasar repo UPSTREAM (fork) — senarai run salah (Mei 2026).
+- Nama fail JS sebenar huruf kecil (`filehandlers.js`, `fonthandler.js`) — senarai Struktur di bawah salah huruf besar.
+- Tiada backlog aktif.
+
+## Fitur patah baris (2026-11-10, LIVE)
+
+Nama + Extra patah ke baris kedua ikut perkataan dalam sempadan sijil; IC TIDAK patah (satu baris).
+- Lebar maks = 2×jarak ke tepi terdekat − 10% (min 10%): `maxTextWidthPercent` dalam `utils.js`, dipakai di pratonton (index.html) DAN cetak (certificateGenerator.js, `createOverlay(..., wrap)`).
+- `width:max-content` WAJIB: tanpa itu kotak absolute mengecut ke ruang di kanan `left`, teks patah terlalu awal.
+- Baris PERTAMA dikunci pada Y (`translateX(-50%)` + `margin-top:-0.6em` + `line-height:1.2`). Dulu `translate(-50%,-50%)` bikin nama 2 baris NAIK separuh jarak baris (~27px) dan line-height 1.6 diwarisi terlalu longgar. Baris tambahan turun ke bawah.
+- Lalai kedudukan: nama Y=42%, IC Y=62% (dulu 50/60 → baris ke-2 nama BERTINDIH IC). Hanya nilai awal; tak ubah templat/laras master.
+- IC `nowrap`: pelayar boleh patah IC di sempang `-`; master mahu IC satu baris. IC terlalu dekat tepi akan melimpah (sengaja).
+
+**Keputusan master (jangan ubah tanpa tanya):**
+- Jangan potong perkataan. Nama TANPA RUANG melimpah (diuji: nama 53 huruf → 158% lebar, bermula dari kiri kotak, bukan sama rata). Cadangan `overflow-wrap:anywhere` HANYA bila satu perkataan melebihi lebar — master jawab **"Tak perlu"** (2026-11-10).
+- Nama 3 baris (83 aksara): jurang ke IC cuma 3px (tak bertindih, rapat); 4 baris bertindih. Master tak minta ubah; laras Y pada templat sebenar.
+
+**Ujian & had:**
+- Kiraan: `node --test tests/utils.test.mjs` (SEBUT fail; `tests/` sahaja ralat Node). Mutan formula (buang ruang tepi) → 3 ujian gagal. Tiada Playwright dalam repo.
+- Disahkan di Chrome (pratonton + simulasi gaya cetak). **PDF cetak SEBENAR BELUM dilihat** (dialog cetak tak boleh dibuka dari extension).
+- Ukur DOM cetak: salin peraturan `@media print` sebagai gaya skrin (`cssRules` silang-asal perlu `try/catch`); tanpa itu `.certificate-container` = static → ukuran 0%/100% PALSU.
+- Pelayan ujian tempatan: skrip Node kecil (modul ES tak jalan dari `file://`); tutup ikut PID port — JANGAN `taskkill /IM node.exe` (mematikan semua Node, disekat).
+- Dalam mod cetak `.certificate-container` 100%×100% & imej `object-fit:contain` → kalau nisbah halaman ≠ nisbah imej, Y% cetak boleh beza dari pratonton (kod upstream, belum diuji).
 
 ## Sejarah
 
@@ -21,7 +36,7 @@
 
 - **Fork (bukan clone jadi repo baru)** — kekal `upstream` remote ke `Kiyoraka/Certificate-Generator`, senang `git fetch upstream` kalau nak tarik update/fix dari repo asal masa depan
 - **Hosting: GitHub Pages, BUKAN Cloudflare** — arahan terus master ("deploy github.io je"). Projek 100% static (HTML/CSS/JS vanilla, tiada backend/DB), jadi Cloudflare Workers/D1/Hono memang tak perlu — overhead setup tanpa faedah
-- **Tiada branch `test`/staging berasingan** — repo kecil, static, risiko rendah kalau silap push; `main` terus deploy
+- **Tiada branch `test`/staging berasingan** — repo kecil, static, risiko rendah kalau silap push; `main` ialah production (deploy dicetus MANUAL, lihat Status)
 
 ## Gotcha
 
@@ -45,4 +60,4 @@ assets/
 
 ## Backlog — Belum Buat
 
-_Tiada. Belum ada permintaan modifikasi kod dari upstream._
+- Lihat PDF cetak sebenar dengan nama panjang (belum disahkan).
