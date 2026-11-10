@@ -8,6 +8,7 @@
 - Nama fail sebenar JS huruf kecil (`filehandlers.js`, `fonthandler.js`) — senarai Struktur di bawah salah huruf besar.
 - 2026-11-10: nama/IC/Extra patah baris ikut perkataan dalam sempadan sijil (LIVE 2026-11-10, commit 02a59ed). Lebar maks = 2×jarak ke tepi terdekat − 10% (min 10%), fungsi `maxTextWidthPercent` dalam utils.js, dipakai di pratonton (index.html) DAN cetak (certificateGenerator.js). KENAPA `width:max-content`: tanpa itu kotak absolute mengecut ke ruang di kanan `left`, jadi teks patah terlalu awal. Satu perkataan lebih panjang dari lebar maks akan melimpah (sengaja, master: jangan potong perkataan). Ujian: `node --test tests/utils.test.mjs` (SEBUT fail; `tests/` sahaja ralat). Belum diuji dalam app penuh + cetak PDF sebenar; line-height baris kedua longgar (diwarisi).
 - 🔴 2026-11-10: push ke `main` TAK mencetus workflow (run lama pun `workflow_dispatch`). Selepas push WAJIB `gh workflow run static.yml -R syazwanbmw-dev/Certificate-Generator --ref main`. Juga: `gh` tanpa `-R` menyasar repo UPSTREAM (fork) — senarai run salah (Mei 2026).
+- 2026-11-10 (BELUM push): IC TIDAK patah langsung (`white-space:nowrap`; param `wrap=false` dlm createOverlay + `.ic-overlay` CSS). Keputusan master: sebab pelayar boleh patah IC di sempang `-`. Akibat: IC pada X terlalu dekat tepi akan MELIMPAH (disahkan visual X=12%) — sengaja. Nama/Extra tanpa ruang juga melimpah; Extra boleh patah di sempang.
 - Tiada backlog aktif
 
 ## Sejarah

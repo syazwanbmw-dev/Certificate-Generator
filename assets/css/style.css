@@ -415,6 +415,11 @@ input[type="color"] {
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
+/* IC always stays on one line (name/extra wrap; IC must not break at hyphens) */
+.ic-overlay {
+    white-space: nowrap;
+}
+
 /* Position Tabs */
 .position-tabs {
     display: flex;

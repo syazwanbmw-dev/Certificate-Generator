@@ -92,7 +92,7 @@ function createCertificatePage(entry) {
     // IC overlay - skip if empty
     if (entry.ic && entry.ic.trim() !== '') {
         certificateContainer.appendChild(
-            createOverlay(entry.ic, this.icPosition, this.fontFamily)
+            createOverlay(entry.ic, this.icPosition, this.fontFamily, false)
         );
     }
 
@@ -116,9 +116,10 @@ function createCertificatePage(entry) {
  * @param {string} text - The text to render
  * @param {Object} position - Position object {x, y, fontSize, color}
  * @param {string} fontFamily - Font family stack
+ * @param {boolean} [wrap=true] - Wrap long text inside the certificate edge; false = single line
  * @returns {HTMLElement} The overlay element
  */
-function createOverlay(text, position, fontFamily) {
+function createOverlay(text, position, fontFamily, wrap = true) {
     const el = document.createElement('div');
     el.textContent = text;
     el.style.position = 'absolute';
@@ -132,9 +133,14 @@ function createOverlay(text, position, fontFamily) {
     el.style.textAlign = 'center';
     // Wrap at word boundaries inside the certificate edge (never break a word).
     // width:max-content stops the absolute box shrinking to the space right of `left`.
-    el.style.whiteSpace = 'normal';
+    // wrap=false (IC): always one line, never wrapped, even at hyphens.
     el.style.width = 'max-content';
-    el.style.maxWidth = `${maxTextWidthPercent(position.x)}%`;
+    if (wrap) {
+        el.style.whiteSpace = 'normal';
+        el.style.maxWidth = `${maxTextWidthPercent(position.x)}%`;
+    } else {
+        el.style.whiteSpace = 'nowrap';
+    }
     el.style.zIndex = '10';
     return el;
 }
